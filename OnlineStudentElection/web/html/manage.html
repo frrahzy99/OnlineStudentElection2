@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Candidates - Online Student Election KPPIM 2025</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="top-header">
+    Online Student Election KPPIM 2025
+    <div class="top-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="manage.html">Manage Candidates</a>
+        <a href="admin_login.html">Log Out</a>
+    </div>
+</div>
+
+<div class="page-container">
+    <div class="card">
+        <h2 class="section-title">Candidates List</h2>
+
+        <div class="manage-toolbar">
+            <div class="left">
+                <button class="btn btn-primary" onclick="openPopup('add')">+ Add Candidate</button>
+            </div>
+            <div class="right">
+                <input id="searchInput" class="search-input" type="text" placeholder="Search by ID or name">
+                <select id="courseFilter">
+                    <option value="all">All courses</option>
+                    <option value="Bachelor in Multimedia Computing">Bachelor in Multimedia Computing</option>
+                    <option value="Bachelor in Software Engineering">Bachelor in Software Engineering</option>
+                    <option value="Bachelor in Computer Science">Bachelor in Computer Science</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="manage-grid mt-20" id="candidateGrid">
+            <!-- Cards rendered by JS -->
+        </div>
+    </div>
+</div>
+
+<!-- POPUP -->
+<div id="popupBg" class="popup-bg hidden">
+    <div class="popup-box">
+        <div class="popup-title" id="popupTitle">Add Candidate</div>
+
+        <div class="form-group">
+            <label>Candidate ID</label>
+            <input type="text" id="popupId">
+        </div>
+
+        <div class="form-group">
+            <label>Candidate Name</label>
+            <input type="text" id="popupName">
+        </div>
+
+        <div class="form-group">
+            <label>Course</label>
+            <select id="popupCourse">
+                <option value="Bachelor in Multimedia Computing">Bachelor in Multimedia Computing</option>
+                <option value="Bachelor in Software Engineering">Bachelor in Software Engineering</option>
+                <option value="Bachelor in Computer Science">Bachelor in Computer Science</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Image</label>
+            <input type="file" id="popupImage" accept="image/*">
+            <div class="popup-preview" id="popupPreview"></div>
+        </div>
+
+        <div class="popup-actions">
+            <button class="btn btn-outline" onclick="closePopup()">Cancel</button>
+            <button class="btn btn-primary" onclick="savePopup()">Save changes</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Demo in-memory candidates list
+let candidates = [
+    {id:'C1', name:'Lin yi', course:'Bachelor in Multimedia Computing', image:'candidate1.jpg'},
+    {id:'C2', name:'Kim Woo Bin', course:'Bachelor in Software Engineering', image:'candidate2.jpg'},
+    {id:'C3', name:'Leonardo Dicaprio', course:'Bachelor in Computer Science', image:'candidate3.jpg'}
+];
+
+let popupMode = 'add'; // 'add' or 'edit'
+let editingId = null;
+
+const grid = document.getElementById('candidateGrid');
+const searchInput = document.getElementById('searchInput');
+const courseFilter = document.getElementById('courseFilter');
+const popupBg = document.getElementById('popupBg');
+const popupTitle = document.getElementById('popupTitle');
+const popupId = document.getElementById('popupId');
+const popupName = document.getElementById('popupName');
+const popupCourse = document.getElementById('popupCourse');
+const popupImage = document.getElementById('popupImage');
+const popupPreview = document.getElementById('popupPreview');
+
+// keep image object URLs so they don't break
+let tempImageMap = {}; // {id: objectURL}
+
+function renderCandidates(){
+    const term = searchInput.value.toLowerCase();
+    const courseVal = courseFilter.value;
+
+    grid.innerHTML = '';
+
+    candidates
+        .filter(c => {
+            const matchSearch = c.id.toLowerCase().includes(term) || c.name.toLowerCase().includes(term);
+            const matchCourse = (courseVal === 'all') || (c.course === courseVal);
+            return matchSearch && matchCourse;
+        })
+        .forEach(c => {
+            const card = document.createElement('div');
+            card.className = 'manage-card';
+            card.setAttribute('data-id', c.id);
+
+            const imgSrc = tempImageMap[c.id] || c.image || 'images/placeholder.jpg';
+
+            card.innerHTML = `
+                <img src="${imgSrc}" alt="${c.name}">
+                <div class="candidate-name">${c.name}</div>
+                <div class="candidate-course" style="margin-top:4px;">${c.course}</div>
+                <div class="manage-actions">
+                    <button class="btn btn-yellow" onclick="openPopup('edit','${c.id}')">Edit</button>
+                    <button class="btn btn-red" onclick="deleteCandidate('${c.id}')">Delete</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+}
+
+function openPopup(mode, id){
+    popupMode = mode;
+    popupImage.value = '';
+    popupPreview.innerHTML = '';
+
+    if(mode === 'add'){
+        popupTitle.textContent = 'Add Candidate';
+        popupId.value = '';
+        popupName.value = '';
+        popupCourse.value = 'Bachelor in Multimedia Computing';
+        popupId.removeAttribute('readonly');
+        editingId = null;
+    } else {
+        popupTitle.textContent = 'Edit Candidate';
+        const c = candidates.find(x => x.id === id);
+        if(!c) return;
+        popupId.value = c.id;
+        popupName.value = c.name;
+        popupCourse.value = c.course;
+        popupId.setAttribute('readonly','readonly');
+        editingId = id;
+
+        // show current image preview
+        const imgSrc = tempImageMap[c.id] || c.image || 'images/placeholder.jpg';
+        popupPreview.innerHTML = `<img src="${imgSrc}" alt="${c.name}">`;
+    }
+
+    popupBg.classList.remove('hidden');
+}
+
+function closePopup(){
+    popupBg.classList.add('hidden');
+}
+
+popupImage.addEventListener('change', function(){
+    const file = popupImage.files[0];
+    popupPreview.innerHTML = '';
+    if(file){
+        const url = URL.createObjectURL(file);
+        popupPreview.innerHTML = `<img src="${url}" alt="preview">`;
+        // store temp URL only after save
+    }
+});
+
+function savePopup(){
+    const idVal = popupId.value.trim();
+    const nameVal = popupName.value.trim();
+    const courseVal = popupCourse.value;
+    const file = popupImage.files[0];
+
+    if(!idVal || !nameVal){
+        alert('Please fill in Candidate ID and Name.');
+        return;
+    }
+
+    if(popupMode === 'add'){
+        if(candidates.some(c => c.id === idVal)){
+            alert('Candidate ID already exists.');
+            return;
+        }
+        const newCandidate = {
+            id: idVal,
+            name: nameVal,
+            course: courseVal,
+            image: 'images/placeholder.jpg'
+        };
+        candidates.push(newCandidate);
+        if(file){
+            const url = URL.createObjectURL(file);
+            tempImageMap[idVal] = url;
+        }
+    } else {
+        candidates = candidates.map(c => {
+            if(c.id === editingId){
+                const updated = {...c, name: nameVal, course: courseVal};
+                if(file){
+                    const url = URL.createObjectURL(file);
+                    tempImageMap[editingId] = url;
+                }
+                return updated;
+            }
+            return c;
+        });
+    }
+
+    renderCandidates();
+    closePopup();
+}
+
+function deleteCandidate(id){
+    if(!confirm('Delete candidate ' + id + '?')) return;
+    candidates = candidates.filter(c => c.id !== id);
+    delete tempImageMap[id];
+    renderCandidates();
+}
+
+searchInput.addEventListener('input', renderCandidates);
+courseFilter.addEventListener('change', renderCandidates);
+
+// init
+renderCandidates();
+</script>
+
+</body>
+</html>

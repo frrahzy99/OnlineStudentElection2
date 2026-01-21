@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vote Page - Online Student Election KPPIM 2025</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div class="top-header">
+        Online Student Election KPPIM 2025
+        <div class="top-nav">
+            <a href="index.html">Log Out</a>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="card">
+            <p class="center-text">Welcome, Farah Afifah binti Ramlee</p>
+
+            <h2 class="section-title mt-10">Vote Your Future Leaders!</h2>
+            <p class="center-text muted">Max: 2 candidates</p>
+
+            <div class="candidate-grid">
+
+                <div class="candidate-card" data-id="linyi">
+                    <span class="badge">Selected</span>
+                    <img src="candidate1.jpg" alt="Lin Yi">
+                    <div class="candidate-name">Lin yi</div>
+                    <div class="candidate-course">Bachelor in Multimedia Computing</div>
+                    <button class="btn btn-yellow mt-10 vote-toggle-btn">Vote</button>
+                </div>
+
+                <div class="candidate-card" data-id="kim">
+                    <span class="badge">Selected</span>
+                    <img src="candidate2.jpg" alt="Kim Woo Bin">
+                    <div class="candidate-name">Kim Woo Bin</div>
+                    <div class="candidate-course">Bachelor in Software Engineering</div>
+                    <button class="btn btn-yellow mt-10 vote-toggle-btn">Vote</button>
+                </div>
+
+                <div class="candidate-card" data-id="leo">
+                    <span class="badge">Selected</span>
+                    <img src="candidate3.jpg" alt="Leonardo Dicaprio">
+                    <div class="candidate-name">Leonardo Dicaprio</div>
+                    <div class="candidate-course">Bachelor in Computer Science</div>
+                    <button class="btn btn-yellow mt-10 vote-toggle-btn">Vote</button>
+                </div>
+
+            </div>
+
+            <div class="center-text mt-20">
+                <button id="submitBtn" class="btn btn-green" disabled>
+                    Submit
+                </button>
+                <p class="muted mt-10" id="voteHint">Select up to 2 candidates.</p>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+(function(){
+    const cards = document.querySelectorAll('.candidate-card');
+    const submitBtn = document.getElementById('submitBtn');
+    const hint = document.getElementById('voteHint');
+    let selectedCount = 0;
+
+    function updateSubmitState(){
+        submitBtn.disabled = selectedCount === 0;
+        if(selectedCount === 0){
+            hint.textContent = 'Select up to 2 candidates.';
+        } else if(selectedCount === 1){
+            hint.textContent = 'You have selected 1 candidate. You can select 1 more.';
+        } else {
+            hint.textContent = 'Max reached: 2 candidates selected.';
+        }
+    }
+
+    cards.forEach(card => {
+        const btn = card.querySelector('.vote-toggle-btn');
+        btn.addEventListener('click', function(){
+            const isSelected = card.classList.contains('selected');
+            if(isSelected){
+                card.classList.remove('selected');
+                selectedCount--;
+            } else {
+                if(selectedCount >= 2){
+                    alert('You can only select up to 2 candidates.');
+                    return;
+                }
+                card.classList.add('selected');
+                selectedCount++;
+            }
+            updateSubmitState();
+        });
+    });
+
+    submitBtn.addEventListener('click', function(){
+        if(selectedCount === 0){
+            alert('Please select at least 1 candidate.');
+            return;
+        }
+        // Just UI: go to success page
+        window.location = 'voted_success.html';
+    });
+
+    updateSubmitState();
+})();
+</script>
+
+</body>
+</html>

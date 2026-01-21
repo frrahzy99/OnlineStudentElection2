@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/html/dashboard.html</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/controller/SubmitVoteServlet.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/controller/ImageServlet.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/controller/AdminLoginServlet.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/dao/CourseDAO.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/controller/AddCandidateServlet.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/controller/SignupServlet.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/model/Candidate.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/css/styles.css</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/votepage.jsp</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/homepage.jsp</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/model/Course.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/candidate_not_allowed.jsp</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/dao/DashboardDAO.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/index.jsp</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/manage.jsp</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/dashboard.jsp</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/controller/EditCandidateServlet.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/controller/DeleteCandidateServlet.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/signup.jsp</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/voted_success.jsp</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/dao/CandidateDAO.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/web/admin_login.jsp</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/controller/LoginServlet.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/OnlineStudentElection/src/java/dao/VoteDAO.java</file>
+        </group>
+    </open-files>
+</project-private>

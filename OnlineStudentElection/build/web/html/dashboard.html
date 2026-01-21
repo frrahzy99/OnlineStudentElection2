@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Online Student Election KPPIM 2025</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="top-header">
+    Online Student Election KPPIM 2025
+    <div class="top-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="manage.html">Manage Candidates</a>
+        <a href="admin_login.html">Log Out</a>
+    </div>
+</div>
+
+<div class="page-container">
+
+    <div class="card">
+        <div class="dashboard-stat">
+            <div class="dashboard-stat-title">Total registered voters</div>
+            <div class="dashboard-stat-number">102</div>
+        </div>
+
+        <div class="result-title">Candidates Result</div>
+
+        <div id="resultsArea"></div>
+
+        <div class="course-summary">
+            <h3>Courses Overview</h3>
+            <div class="course-summary-list" id="courseSummary">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// same candidates as in manage/vote (demo data)
+const candidates = [
+    {id:'C1', name:'Lin yi', course:'Bachelor in Multimedia Computing', image:'candidate1.jpg', percent:89},
+    {id:'C2', name:'Kim Woo Bin', course:'Bachelor in Software Engineering', image:'candidate2.jpg', percent:55},
+    {id:'C3', name:'Leonardo Dicaprio', course:'Bachelor in Computer Science', image:'candidate3.jpg', percent:31}
+];
+
+const resultsArea = document.getElementById('resultsArea');
+const courseSummary = document.getElementById('courseSummary');
+
+// render candidate rows
+candidates.forEach(c => {
+    const row = document.createElement('div');
+    row.className = 'result-row';
+    row.innerHTML = `
+        <img src="${c.image}" alt="${c.name}">
+        <div style="flex:1;">
+            <div class="result-name">${c.name}</div>
+            <div class="result-meta">${c.course}</div>
+        </div>
+        <div class="result-percent">${c.percent}%</div>
+    `;
+    resultsArea.appendChild(row);
+});
+
+// compute course counts
+const courseCounts = {};
+candidates.forEach(c => {
+    courseCounts[c.course] = (courseCounts[c.course] || 0) + 1;
+});
+
+// render course badges
+Object.keys(courseCounts).forEach(course => {
+    const badge = document.createElement('div');
+    badge.className = 'course-badge';
+    badge.textContent = `${course}: ${courseCounts[course]} candidate(s)`;
+    courseSummary.appendChild(badge);
+});
+</script>
+
+</body>
+</html>
